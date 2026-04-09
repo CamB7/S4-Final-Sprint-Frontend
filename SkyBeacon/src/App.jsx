@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Aurora from './components/Aurora.jsx';
-import Home from './pages/Home.jsx';
+import Nav from './components/Nav.jsx';
+import Home from './pages/home/Home.jsx';
 import Login from './pages/login/Login.jsx';
 import AdminDash from './pages/dashboards/AdminDash.jsx';
 import FlightDash from './pages/dashboards/FlightDash.jsx';
@@ -18,6 +19,7 @@ function App() {
       </div>
 
       <main className="app-content">
+        <Nav />
         <Routes>
           <Route
             path="/"
