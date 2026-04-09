@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Aurora from './components/Aurora.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/login/Login.jsx';
@@ -7,33 +7,37 @@ import FlightDash from './pages/dashboards/FlightDash.jsx';
 
 function App() {
   return (
-    <>
-      <Aurora
-        colorStops={['#7cff67', '#B19EEF', '#5227FF']}
-        blend={0.5}
-        amplitude={1.0}
-        speed={1}
-      />
+    <div className="app-shell">
+      <div className="app-background">
+        <Aurora
+          colorStops={['#25344F', '#632024', '#617891']}
+          blend={0.5}
+          amplitude={1.0}
+          speed={1}
+        />
+      </div>
 
-      <Routes>
-        <Route
-          path="/"
-          element={<Home />}
-        />
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/dashboard/admin"
-          element={<AdminDash />}
-        />
-        <Route
-          path="/dashboard/flight"
-          element={<FlightDash />}
-        />
-      </Routes>
-    </>
+      <main className="app-content">
+        <Routes>
+          <Route
+            path="/"
+            element={<Home />}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+          <Route
+            path="/dashboard/admin"
+            element={<AdminDash />}
+          />
+          <Route
+            path="/dashboard/flight"
+            element={<FlightDash />}
+          />
+        </Routes>
+      </main>
+    </div>
   );
 }
 
