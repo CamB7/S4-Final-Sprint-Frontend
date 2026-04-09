@@ -1,0 +1,36 @@
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  position: relative;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 10rem;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.main-nav a {
+  color: brown;
+  text-decoration: none;
+  font-family: var(--rubik);
+  font-size: 1.15rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: rgb(195, 58, 58);
+  text-shadow: 0 2px 6px rgba(50, 50, 50, 0.4), 0 0 15px rgba(79, 79, 79, 0.2);
+}
+
+.nav-logo {
+  width: 80px;
+}
