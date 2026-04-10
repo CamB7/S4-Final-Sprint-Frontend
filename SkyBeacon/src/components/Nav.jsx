@@ -20,7 +20,7 @@ const Nav = () => {
           <Link to="/dashboard/flight">Flights</Link>
         </li>
         <li>
-          <Link to="/dashboard/admin">Admin</Link>
+          <Link to="/login">Admin</Link>
         </li>
       </ul>
     </nav>
