@@ -1,0 +1,54 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  margin-top: 3.5rem;
+}
+
+.title {
+  color: var(--tan);
+  font-family: var(--nunito);
+  font-weight: 200;
+  font-size: 4.5rem;
+  letter-spacing: 0.15rem;
+  margin: 0;
+  padding: 0;
+}
+
+.slogan {
+  color: white;
+  font-family: var(--nunito);
+  font-weight: 200;
+  font-size: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.bottom h4 {
+  color: rgb(234, 234, 234);
+  font-family: var(--nunito);
+  font-weight: 200;
+  font-size: 1rem;
+}
+
+.flight-button {
+  width: 300px;
+  height: 40px;
+  color: var(--tan);
+  font-size: 1.3rem;
+  background-color: var(--slate-grey);
+  border-radius: 50px;
+  border: none;
+  margin-top: 0.2rem;
+}
