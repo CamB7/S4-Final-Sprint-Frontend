@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import "./Login.css";
+import "./Login.css";
+import Button from "../../components/Button";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -56,7 +57,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Admin Login</h2>
+        <h2>ADMIN LOGIN</h2>
 
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -65,8 +66,6 @@ const Login = () => {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            autoComplete="username"
             required
           />
         </div>
@@ -78,17 +77,17 @@ const Login = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            autoComplete="current-password"
             required
           />
         </div>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <button type="submit" className="login-button" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
+        <Button
+          text={loading ? "LOGGING IN..." : "LOGIN"}
+          type="submit"
+          disabled={loading}
+        />
       </form>
     </div>
   );
