@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Aurora from './components/Aurora.jsx';
 import Nav from './components/Nav.jsx';
 import Home from './pages/home/Home.jsx';
@@ -7,6 +8,18 @@ import AdminDash from './pages/dashboards/AdminDash.jsx';
 import FlightDash from './pages/dashboards/FlightDash.jsx';
 
 function App() {
+  const [flights, setFlights] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/flights')
+      .then((response) => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then((data) => setFlights(data))
+      .catch((error) => console.error('Error fetching:', error));
+  }, []);
+
   return (
     <div className="app-shell">
       <div className="app-background">
@@ -23,7 +36,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home />}
+            element={<Home flights={flights} />}
           />
           <Route
             path="/login"
