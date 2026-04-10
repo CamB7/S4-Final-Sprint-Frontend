@@ -6,6 +6,7 @@ import Home from './pages/home/Home.jsx';
 import Login from './pages/login/Login.jsx';
 import AdminDash from './pages/dashboards/AdminDash.jsx';
 import FlightDash from './pages/dashboards/FlightDash.jsx';
+import AddFlight from './components/AddFlight.jsx';
 
 function App() {
   const [flights, setFlights] = useState([]);
@@ -43,13 +44,19 @@ function App() {
             element={<Login />}
           />
           <Route
-            path="/dashboard/admin"
+            path="/adminDashboard"
             element={<AdminDash />}
           />
           <Route
             path="/dashboard/flight"
             element={<FlightDash />}
           />
+          <Route
+            path="/admin/addFlight"
+            element={<AddFlight />}
+          />
+          
+          
         </Routes>
       </main>
     </div>

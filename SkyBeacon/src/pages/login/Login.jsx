@@ -45,7 +45,7 @@ const Login = () => {
         console.log("Logged in as:", admin.username, admin.roles);
       }
 
-      navigate("/dashboard/admin", { replace: true }); 
+      navigate("/adminDashboard", { replace: true });
     } catch (err) {
       console.error("Error connecting to backend:", err);
       setError("An error occurred. Please try again.");
