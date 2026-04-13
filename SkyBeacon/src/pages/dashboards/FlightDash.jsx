@@ -5,6 +5,19 @@ import './FlightDash.css';
 const FlightDash = ({ flights = [] }) => {
   const [activeTab, setActiveTab] = useState('arrivals');
 
+  const formatStatus = (status) => {
+    if (!status) return 'N/A';
+    if (status === 'SCHEDULED') {
+      status = 'ON SCHEDULE';
+    }
+    return status.replace(/_/g, ' ');
+  };
+
+  const getStatusClass = (status) => {
+    if (!status) return '';
+    return `status-${status.toLowerCase().replace(/_/g, '-')}`;
+  };
+
   const formatDateTime = (dateString) => {
     if (!dateString) return 'TBD';
     const date = new Date(dateString);
@@ -75,7 +88,9 @@ const FlightDash = ({ flights = [] }) => {
                     ? flight.arrivalGateCode || 'TBD'
                     : flight.departureGateCode || 'TBD'}
                 </td>
-                <td className="status">{flight.status}</td>
+                <td className={`status ${getStatusClass(flight.status)}`}>
+                  {formatStatus(flight.status)}
+                </td>
               </tr>
             ))
           ) : (
