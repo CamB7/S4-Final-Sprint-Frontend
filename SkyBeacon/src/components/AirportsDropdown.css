@@ -1,0 +1,53 @@
+.airports-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.airports-dropdown-toggle {
+  color: var(--tan);
+  border: none;
+  padding: 1rem 3rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 30px;
+  background-image: linear-gradient(50deg, var(--slate-grey), var(--red));
+  background-size: 150% 100%;
+  transition: background-position 0.5s ease-in-out;
+  font-family: var(--nunito);
+}
+
+.airports-dropdown-toggle:hover {
+  background-position: 100% 150%;
+}
+
+.airports-dropdown-menu {
+  position: absolute;
+  width: 100%;
+  list-style: none;
+  padding: .5rem;
+  margin-top: .5rem;
+  border-radius: 30px;
+  border: 1px solid var(--slate-grey);
+  box-shadow: 0px 0px 10px var(--slate-grey);
+  background: rgba(98, 120, 144, .7);
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  font-family: var(--nunito);
+}
+
+.airports-dropdown-menu.open {
+  opacity: 1;
+}
+
+.airports-dropdown-item {
+  padding: .5rem 1rem;
+  cursor: pointer;
+  color: var(--tan);
+  transition: background-color 0.3s ease;
+}
+
+.airports-dropdown-item:hover {
+  color: white;
+}
