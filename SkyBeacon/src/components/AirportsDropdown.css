@@ -4,6 +4,7 @@
 }
 
 .airports-dropdown-toggle {
+  box-sizing: border-box;
   color: var(--tan);
   border: none;
   padding: 1rem 3rem;
@@ -22,11 +23,11 @@
 }
 
 .airports-dropdown-menu {
+  box-sizing: border-box;
+  width: 100%;
   position: absolute;
   width: 100%;
   list-style: none;
-  padding: .5rem;
-  margin-top: .5rem;
   border-radius: 30px;
   border: 1px solid var(--slate-grey);
   box-shadow: 0px 0px 10px var(--slate-grey);
@@ -42,7 +43,7 @@
 }
 
 .airports-dropdown-item {
-  padding: .5rem 1rem;
+  padding: 1rem 0rem;
   cursor: pointer;
   color: var(--tan);
   transition: background-color 0.3s ease;
