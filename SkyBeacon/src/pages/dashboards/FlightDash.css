@@ -4,10 +4,23 @@
   margin: 0 auto;
 }
 
+.dash-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
 .tabs {
   display: flex;
+  margin-top: 1rem;
   gap: 1rem;
-  margin-bottom: 2rem;
+}
+
+.dropdown-container {
+  width: 250px;
+  position: relative;
+  z-index: 10;
 }
 
 .tab,

@@ -1,9 +1,30 @@
 import { useState } from 'react';
+import AirportsDropdown from '../../components/AirportsDropdown';
 import '../../index.css';
 import './FlightDash.css';
 
 const FlightDash = ({ flights = [] }) => {
   const [activeTab, setActiveTab] = useState('arrivals');
+  const [selectedAirport, setSelectedAirport] = useState(null);
+
+  const fetchAirports = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/airports', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch airports');
+      }
+
+      const data = await response.json();
+      return data.map((airport) => airport.code);
+    } catch (error) {
+      console.error('Error fetching airports:', error);
+      return [];
+    }
+  };
 
   const formatStatus = (status) => {
     if (!status) return 'N/A';
@@ -30,24 +51,47 @@ const FlightDash = ({ flights = [] }) => {
     });
   };
 
-  const filteredFlights = flights;
+  const filteredFlights = flights.filter((flight) => {
+    if (!selectedAirport || selectedAirport === 'All Airports') return true;
 
-  console.log('Single flight object:', flights[0]);
+    const targetAirport = String(selectedAirport).trim().toLowerCase();
+
+    if (activeTab === 'arrivals') {
+      const arrCode = flight.arrivalAirportCode
+        ? String(flight.arrivalAirportCode).trim().toLowerCase()
+        : '';
+      return arrCode === targetAirport;
+    } else {
+      const depCode = flight.departureAirportCode
+        ? String(flight.departureAirportCode).trim().toLowerCase()
+        : '';
+      return depCode === targetAirport;
+    }
+  });
+
   return (
     <div className="flight-dash-container">
-      <div className="tabs">
-        <button
-          className={activeTab === 'arrivals' ? 'active-tab' : 'tab'}
-          onClick={() => setActiveTab('arrivals')}
-        >
-          Arrivals
-        </button>
-        <button
-          className={activeTab === 'departures' ? 'active-tab' : 'tab'}
-          onClick={() => setActiveTab('departures')}
-        >
-          Departures
-        </button>
+      <div className="dash-controls">
+        <div className="tabs">
+          <button
+            className={activeTab === 'arrivals' ? 'active-tab' : 'tab'}
+            onClick={() => setActiveTab('arrivals')}
+          >
+            Arrivals
+          </button>
+          <button
+            className={activeTab === 'departures' ? 'active-tab' : 'tab'}
+            onClick={() => setActiveTab('departures')}
+          >
+            Departures
+          </button>
+        </div>
+        <div className="dropdown-container">
+          <AirportsDropdown
+            fetchItems={fetchAirports}
+            onSelect={setSelectedAirport}
+          />
+        </div>
       </div>
 
       <table className="flight-table">
@@ -66,7 +110,7 @@ const FlightDash = ({ flights = [] }) => {
           {filteredFlights.length > 0 ? (
             filteredFlights.map((flight) => (
               <tr key={flight.id}>
-                <td>{flight.flightNumber}</td>
+                <td>{flight.flightNumber || flight.id || 'N/A'}</td>
                 <td>{flight.airlineName || 'N/A'}</td>
                 <td>
                   {activeTab === 'arrivals'
@@ -99,7 +143,8 @@ const FlightDash = ({ flights = [] }) => {
                 colSpan="7"
                 className="no-flights"
               >
-                No {activeTab} available.
+                No {activeTab} available for{' '}
+                {selectedAirport || 'this selection'}.
               </td>
             </tr>
           )}
