@@ -68,3 +68,32 @@
   padding: 2rem;
   color: var(--slate-grey);
 }
+
+.status {
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+}
+
+.status-cancelled {
+  color: rgb(218, 85, 85);
+}
+
+.status-delayed {
+  color: rgb(228, 173, 63);
+}
+
+.status-scheduled {
+  color: rgb(113, 215, 118);
+}
+
+.status-boarding {
+  color: rgb(103, 175, 234);
+}
+
+.status-at-gate {
+  color: rgb(111, 195, 180);
+}
+
+.status-departed {
+  color: rgb(152, 152, 152);
+}
