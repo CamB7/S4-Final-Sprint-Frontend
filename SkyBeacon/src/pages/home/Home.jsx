@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import '../../index.css';
 import './Home.css';
 import Button from '../../components/Button.jsx';
 
 const Home = ({ flights }) => {
+  const navigate = useNavigate();
   const totalFlights = flights ? flights.length : 0;
 
   return (
@@ -13,7 +15,10 @@ const Home = ({ flights }) => {
       </div>
       <div className="bottom">
         <h4>Currently tracking {totalFlights} flights</h4>
-        <Button text="VIEW FLIGHTS"></Button>
+        <Button
+          text="VIEW FLIGHTS"
+          onClick={() => navigate('/flights')}
+        ></Button>
       </div>
     </>
   );

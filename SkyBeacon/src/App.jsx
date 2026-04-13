@@ -48,15 +48,13 @@ function App() {
             element={<AdminDash />}
           />
           <Route
-            path="/dashboard/flight"
-            element={<FlightDash />}
+            path="/flights"
+            element={<FlightDash flights={flights} />}
           />
           <Route
             path="/admin/addFlight"
             element={<AddFlight />}
           />
-          
-          
         </Routes>
       </main>
     </div>
