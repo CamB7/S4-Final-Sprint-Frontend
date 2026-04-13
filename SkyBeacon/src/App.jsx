@@ -52,7 +52,7 @@ function App() {
             element={<FlightDash flights={flights} />}
           />
           <Route
-            path="/admin/addFlight"
+            path="/addFlight"
             element={<AddFlight />}
           />
         </Routes>

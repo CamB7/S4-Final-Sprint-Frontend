@@ -1,9 +1,10 @@
 import "../../index.css";
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import "./AdminDash.css";
 import AirportsDropdown from "../../components/AirportsDropdown";
+import { UserContext } from "../../context/UserContext";
 
 const fetchAirports = async () => {
   try {
@@ -25,7 +26,19 @@ const fetchAirports = async () => {
 };
 
 const AdminDash = () => {
+  const { isLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      navigate("/login", { replace: true }); // Redirect to login if not logged in
+    }
+  }, [isLoggedIn, navigate]);
+
+  // Show a loading state while determining login status
+  if (isLoggedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
