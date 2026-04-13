@@ -1,4 +1,5 @@
 .gradient-button {
+  box-sizing: border-box;
   background-color: var(--slate-grey);
   color: var(--tan);
   border: none;
@@ -11,6 +12,7 @@
   background-size: 150% 100%;
   transition: background-position 0.5s ease-in-out;
   font-family: var(--nunito);
+  white-space: nowrap;
 }
 
 .gradient-button:hover {

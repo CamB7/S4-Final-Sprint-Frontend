@@ -29,15 +29,17 @@ const AdminDash = () => {
 
   return (
     <div>
-      <h2>ADMIN DASHBOARD</h2>
-      <Button
-        text={"ADD FLIGHT"}
-        onClick={() => navigate("/AddFlight", { replace: true })}
-      />
-      <AirportsDropdown fetchItems={fetchAirports} />
-
+      <div className="title-container">
+        <h2>ADMIN DASHBOARD </h2>
+        <div className="buttons-container">
+          <AirportsDropdown fetchItems={fetchAirports} />
+          <Button
+            text={"ADD FLIGHT"}
+            onClick={() => navigate("/AddFlight", { replace: true })}
+          />
+        </div>
+      </div>
     </div>
-
   );
 };
 

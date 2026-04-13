@@ -4,7 +4,7 @@
   --red: rgba(100, 34, 38, 1);
   --blue: rgba(39, 55, 81, 1);
   --slate-grey: rgba(98, 120, 144, 1);
-  --tan: rgba(214, 184, 150, 1);
+  --tan: rgb(214, 184, 150);
   --coffee: rgba(112, 77, 57, 1);
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
