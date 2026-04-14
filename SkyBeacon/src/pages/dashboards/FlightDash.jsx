@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import AirportsDropdown from '../../components/AirportsDropdown';
-import '../../index.css';
 import './FlightDash.css';
 
 const FlightDash = ({ flights = [] }) => {

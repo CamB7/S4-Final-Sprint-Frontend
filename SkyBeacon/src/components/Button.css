@@ -3,9 +3,8 @@
   background-color: var(--slate-grey);
   color: var(--tan);
   border: none;
-  padding: 1rem 3rem;
   font-weight: 300;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   border-radius: 30px;
   background-image: linear-gradient(50deg, var(--slate-grey), var(--red));
@@ -13,6 +12,9 @@
   transition: background-position 0.5s ease-in-out;
   font-family: var(--nunito);
   white-space: nowrap;
+  padding: 0.5rem 2rem;
+  margin-top: 1rem;
+
 }
 
 .gradient-button:hover {

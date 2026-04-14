@@ -2,12 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/SB.png";
 import "./Nav.css";
 
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
-
-const Nav = () => {
-  const { isLoggedIn, logout } = useContext(UserContext);
-
+const Nav = ({ isLoggedIn, onLogout }) => {
   return (
     <nav className="main-nav">
       <div>
@@ -28,8 +23,8 @@ const Nav = () => {
             <li>
               <Link to="/addFlight">Add Flight</Link>
             </li>
-            <li onClick={logout} style={{ cursor: "pointer" }}>
-              <a>Logout</a>
+            <li onClick={onLogout} style={{ cursor: "pointer" }}>
+              <a><span>Logout</span></a>
             </li>
           </>
         ) : (

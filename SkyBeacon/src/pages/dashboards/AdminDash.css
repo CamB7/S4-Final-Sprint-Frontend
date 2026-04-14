@@ -16,3 +16,116 @@
     flex-direction: row;
     gap: 2rem;
 }
+
+.flight-dash-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dash-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.dropdown-container {
+  width: 250px;
+  position: relative;
+  z-index: 10;
+}
+
+.tab,
+.active-tab {
+  background: transparent;
+  border: 1px solid var(--slate-grey);
+  color: var(--text);
+  padding: 0.5rem 2rem;
+  font-family: var(--rubik);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.active-tab {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--text);
+}
+
+.tab:hover {
+  background: rgba(98, 120, 144, 0.2);
+}
+
+.flight-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  font-family: var(--nunito);
+  background: rgba(39, 55, 81, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.flight-table th,
+.flight-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.flight-table th {
+  background: rgba(39, 55, 81, 0.8);
+  font-family: var(--rubik);
+  font-weight: 500;
+  color: var(--tan);
+  letter-spacing: 0.05rem;
+}
+
+.flight-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.no-flights {
+  text-align: center;
+  padding: 2rem;
+  color: var(--slate-grey);
+}
+
+.status {
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+}
+
+.status-cancelled {
+  color: rgb(218, 85, 85);
+}
+
+.status-delayed {
+  color: rgb(228, 173, 63);
+}
+
+.status-scheduled {
+  color: rgb(113, 215, 118);
+}
+
+.status-boarding {
+  color: rgb(103, 175, 234);
+}
+
+.status-at-gate {
+  color: rgb(111, 195, 180);
+}
+
+.status-departed {
+  color: rgb(152, 152, 152);
+}
