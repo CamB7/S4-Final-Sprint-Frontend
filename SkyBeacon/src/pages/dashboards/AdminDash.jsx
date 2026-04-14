@@ -4,56 +4,184 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import "./AdminDash.css";
 import AirportsDropdown from "../../components/AirportsDropdown";
-import { UserContext } from "../../context/UserContext";
+import { useState } from "react";
 
-const fetchAirports = async () => {
-  try {
-    const response = await fetch("http://localhost:8080/airports", {
-      method: "GET",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch airports");
-    }
-
-    const data = await response.json();
-    return data.map((airport) => airport.name);
-  } catch (error) {
-    console.error("Error fetching airports:", error);
-    return [];
-  }
-};
-
-const AdminDash = () => {
-  const { isLoggedIn } = useContext(UserContext);
+const AdminDash = ({ flights = [], isLoggedIn }) => {
+  const [activeTab, setActiveTab] = useState('arrivals');
+  const [selectedAirport, setSelectedAirport] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isLoggedIn === false) {
-      navigate("/login", { replace: true }); // Redirect to login if not logged in
+
+  const fetchAirports = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/airports", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch airports");
+      }
+
+      const data = await response.json();
+      return data.map((airport) => airport.code);
+    } catch (error) {
+      console.error("Error fetching airports:", error);
+      return [];
     }
-  }, [isLoggedIn, navigate]);
+  };
 
-  // Show a loading state while determining login status
-  if (isLoggedIn === null) {
-    return <div>Loading...</div>;
+  const formatStatus = (status) => {
+    if (!status) return "N/A";
+    if (status === "SCHEDULED") {
+      status = "ON SCHEDULE";
+    }
+    return status.replace(/_/g, " ");
+  };
+
+  const getStatusClass = (status) => {
+    if (!status) return "";
+    return `status-${status.toLowerCase().replace(/_/g, "-")}`;
+  };
+
+  const formatDateTime = (dateString) => {
+    if (!dateString) return "TBD";
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const filteredFlights = flights.filter((flight) => {
+    if (!selectedAirport || selectedAirport === "All Airports") return true;
+
+    const targetAirport = String(selectedAirport).trim().toLowerCase();
+
+    if (activeTab === "arrivals") {
+      const arrCode = flight.arrivalAirportCode
+        ? String(flight.arrivalAirportCode).trim().toLowerCase()
+        : "";
+      return arrCode === targetAirport;
+    } else {
+      const depCode = flight.departureAirportCode
+        ? String(flight.departureAirportCode).trim().toLowerCase()
+        : "";
+      return depCode === targetAirport;
+    }
+  });
+
+useEffect(() => {
+  if (isLoggedIn === false) {
+    navigate("/login", { replace: true });
   }
+}, [isLoggedIn]);
 
-  return (
-    <div>
-      <div className="title-container">
-        <h2>ADMIN DASHBOARD </h2>
-        <div className="buttons-container">
-          <AirportsDropdown fetchItems={fetchAirports} />
-          <Button
-            text={"ADD FLIGHT"}
-            onClick={() => navigate("/AddFlight", { replace: true })}
-          />
+    if (isLoggedIn === null) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <div>
+        <div className="title-container">
+          <h2>ADMIN DASHBOARD </h2>
+          <div className="buttons-container">
+            <AirportsDropdown
+              fetchItems={fetchAirports}
+              onSelect={setSelectedAirport}
+            />
+            <div className="dropdown-container">
+              <Button
+                text={"Add Flight"}
+                onClick={() => navigate("/AddFlight", { replace: true })}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="dash-controls">
+          <div className="tabs">
+            <button
+              className={activeTab === "arrivals" ? "active-tab" : "tab"}
+              onClick={() => setActiveTab("arrivals")}
+            >
+              Arrivals
+            </button>
+            <button
+              className={activeTab === "departures" ? "active-tab" : "tab"}
+              onClick={() => setActiveTab("departures")}
+            >
+              Departures
+            </button>
+          </div>
+          {/* <div className="dropdown-container">
+            <AirportsDropdown
+              fetchItems={fetchAirports}
+              onSelect={setSelectedAirport}
+            />
+          </div> */}
+        </div>
+
+        <div className="table-container">
+          <table className="flight-table">
+            <thead>
+              <tr>
+                <th>Flight #</th>
+                <th>Airline</th>
+                <th>Scheduled Time</th>
+                <th>Actual Time</th>
+                <th>{activeTab === "arrivals" ? "From" : "To"}</th>
+                <th>Gate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredFlights.length > 0 ? (
+                filteredFlights.map((flight) => (
+                  <tr key={flight.id}>
+                    <td>{flight.flightNumber || flight.id || "N/A"}</td>
+                    <td>{flight.airlineName || "N/A"}</td>
+                    <td>
+                      {activeTab === "arrivals"
+                        ? formatDateTime(flight.scheduledArrival)
+                        : formatDateTime(flight.scheduledDeparture)}
+                    </td>
+                    <td>
+                      {activeTab === "arrivals"
+                        ? formatDateTime(flight.actualArrival)
+                        : formatDateTime(flight.actualDeparture)}
+                    </td>
+                    <td>
+                      {activeTab === "arrivals"
+                        ? flight.departureAirportCode || "N/A"
+                        : flight.arrivalAirportCode || "N/A"}
+                    </td>
+                    <td>
+                      {activeTab === "arrivals"
+                        ? flight.arrivalGateCode || "TBD"
+                        : flight.departureGateCode || "TBD"}
+                    </td>
+                    <td className={`status ${getStatusClass(flight.status)}`}>
+                      {formatStatus(flight.status)}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="no-flights">
+                    No {activeTab} available for{" "}
+                    {selectedAirport || "this selection"}.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default AdminDash;
