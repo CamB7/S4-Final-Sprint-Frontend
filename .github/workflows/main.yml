@@ -36,5 +36,8 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Preview production build
+      run: npm run preview
+
     - name: Start development server
       run: npm run dev
