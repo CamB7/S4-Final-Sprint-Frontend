@@ -82,14 +82,9 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              isLoggedIn ? (
-                <Navigate to="/adminDashboard" replace />
-              ) : (
-                <Home flights={flights} />
-              )
-            }
+            element={<Home flights={flights} />}
           />
+
           <Route
             path="/login"
             element={
