@@ -32,3 +32,9 @@ jobs:
 
     - name: Build project
       run: npm run build
+
+    - name: Start development server
+      run: npm run dev
+
+    - name: Build project
+      run: npm run build
