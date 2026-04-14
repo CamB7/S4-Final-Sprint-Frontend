@@ -7,14 +7,26 @@ const AirportsDropdown = ({ fetchItems, onSelect }) => {
   const [selectedItem, setSelectedItem] = useState(
     <span
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
       }}
     >
-      All Airports
-    </span>
+      Airports
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 48 48"
+      >
+        <rect width="48" height="48" fill="none" />
+        <g fill="none" stroke="#d6b896" stroke-linecap="round" stroke-width="4">
+          <path stroke-linejoin="round" d="M40 28L24 40L8 28" />
+          <path d="M8 10h32M8 18h32" />
+        </g>
+      </svg>
+    </span>,
   );
 
   const dropdownRef = useRef(null);

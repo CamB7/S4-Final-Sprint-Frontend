@@ -9,8 +9,6 @@
   color: var(--tan);
   border: none;
   padding: 0.5rem 2rem;
-  margin-top: 1rem;
-  margin-left: 3.1rem;
   font-weight: 300;
   font-size: 1.2rem;
   cursor: pointer;
@@ -28,7 +26,6 @@
 .airports-dropdown-menu {
   box-sizing: border-box;
   width: 200px;
-  margin-left: 3rem;
   padding: 0;
   position: absolute;
   max-height: 300px;
