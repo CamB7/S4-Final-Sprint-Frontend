@@ -13,8 +13,6 @@
   font-family: var(--nunito);
   white-space: nowrap;
   padding: 0.5rem 2rem;
-  margin-top: 1rem;
-
 }
 
 .gradient-button:hover {
