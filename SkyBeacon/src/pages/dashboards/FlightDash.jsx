@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AirportsDropdown from '../../components/AirportsDropdown';
 import './FlightDash.css';
 import Button from '../../components/Button';
