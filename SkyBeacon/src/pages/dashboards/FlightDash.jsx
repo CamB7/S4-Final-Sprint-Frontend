@@ -71,17 +71,20 @@ const FlightDash = ({ flights = [] }) => {
 
   return (
     <div className="flight-dash-container">
+      <div className="title-container">
+        <h2>FLIGHTS </h2>
+      </div>
       <div className="dash-controls">
         <div className="tabs">
           <Button
-            className={activeTab === "arrivals" ? "active-tab" : "tab"}
-            onClick={() => setActiveTab("arrivals")}
-            text={"Arrivals"}
+            className={activeTab === 'arrivals' ? 'active-tab' : 'tab'}
+            onClick={() => setActiveTab('arrivals')}
+            text={'Arrivals'}
           />
           <Button
-            className={activeTab === "departures" ? "active-tab" : "tab"}
-            onClick={() => setActiveTab("departures")}
-            text={"Departures"}
+            className={activeTab === 'departures' ? 'active-tab' : 'tab'}
+            onClick={() => setActiveTab('departures')}
+            text={'Departures'}
           />
         </div>
         <div className="dropdown-container">
@@ -99,7 +102,7 @@ const FlightDash = ({ flights = [] }) => {
             <th>Airline</th>
             <th>Scheduled Time</th>
             <th>Actual Time</th>
-            <th>{activeTab === "arrivals" ? "From" : "To"}</th>
+            <th>{activeTab === 'arrivals' ? 'From' : 'To'}</th>
             <th>Gate</th>
             <th>Status</th>
           </tr>
@@ -108,27 +111,27 @@ const FlightDash = ({ flights = [] }) => {
           {filteredFlights.length > 0 ? (
             filteredFlights.map((flight) => (
               <tr key={flight.id}>
-                <td>{flight.flightNumber || flight.id || "N/A"}</td>
-                <td>{flight.airlineName || "N/A"}</td>
+                <td>{flight.flightNumber || flight.id || 'N/A'}</td>
+                <td>{flight.airlineName || 'N/A'}</td>
                 <td>
-                  {activeTab === "arrivals"
+                  {activeTab === 'arrivals'
                     ? formatDateTime(flight.scheduledArrival)
                     : formatDateTime(flight.scheduledDeparture)}
                 </td>
                 <td>
-                  {activeTab === "arrivals"
+                  {activeTab === 'arrivals'
                     ? formatDateTime(flight.actualArrival)
                     : formatDateTime(flight.actualDeparture)}
                 </td>
                 <td>
-                  {activeTab === "arrivals"
-                    ? flight.departureAirportCode || "N/A"
-                    : flight.arrivalAirportCode || "N/A"}
+                  {activeTab === 'arrivals'
+                    ? flight.departureAirportCode || 'N/A'
+                    : flight.arrivalAirportCode || 'N/A'}
                 </td>
                 <td>
-                  {activeTab === "arrivals"
-                    ? flight.arrivalGateCode || "TBD"
-                    : flight.departureGateCode || "TBD"}
+                  {activeTab === 'arrivals'
+                    ? flight.arrivalGateCode || 'TBD'
+                    : flight.departureGateCode || 'TBD'}
                 </td>
                 <td className={`status ${getStatusClass(flight.status)}`}>
                   {formatStatus(flight.status)}
@@ -137,9 +140,12 @@ const FlightDash = ({ flights = [] }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="no-flights">
-                No {activeTab} available for{" "}
-                {selectedAirport || "this selection"}.
+              <td
+                colSpan="7"
+                className="no-flights"
+              >
+                No {activeTab} available for{' '}
+                {selectedAirport || 'this selection'}.
               </td>
             </tr>
           )}
