@@ -127,7 +127,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
   return (
     <div className="admin-dash-container">
       <div className="title-container">
-        <h2>ADMIN DASHBOARD </h2>
+        <h2>Admin Dashboard</h2>
         {message && (
           <div className={`message-${message.type}`}>{message.text}</div>
         )}
@@ -210,7 +210,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
-                      onClick={() => navigate(`/EditFlight/${flight.id}`)}
+                      onClick={() => navigate(`/EditFlight/${flight.id}`, { state: { flight } })}
                     >
                       <rect width="24" height="24" fill="none" />
                       <path
