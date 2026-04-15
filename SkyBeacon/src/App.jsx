@@ -7,6 +7,7 @@ import Login from "./pages/login/Login.jsx";
 import AdminDash from "./pages/dashboards/AdminDash.jsx";
 import FlightDash from "./pages/dashboards/FlightDash.jsx";
 import AddFlight from "./components/AddFlight.jsx";
+import EditFlight from "./components/EditFlight.jsx";
 
 function App() {
   const [flights, setFlights] = useState([]);
@@ -21,9 +22,9 @@ function App() {
   }, []);
 
   const handleLogin = (userData) => {
-    console.log("Sending login request:", userData);
     fetch("http://localhost:8080/auth/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,9 +40,9 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log("Login successful:", data);
         setIsLoggedIn(true);
         setUser(data);
+
         localStorage.setItem("isLoggedIn", "true");
       })
       .catch((error) => {
@@ -51,13 +52,20 @@ function App() {
   };
 
   const handleLogout = () => {
+    fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    }).catch(() => {});
+
     setIsLoggedIn(false);
     setUser(null);
     localStorage.removeItem("isLoggedIn");
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/flights")
+    fetch("http://localhost:8080/flights", {
+      credentials: "include",
+    })
       .then((response) => {
         if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
@@ -79,11 +87,9 @@ function App() {
 
       <main className="app-content">
         <Nav isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+
         <Routes>
-          <Route
-            path="/"
-            element={<Home flights={flights} />}
-          />
+          <Route path="/" element={<Home flights={flights} />} />
 
           <Route
             path="/login"
@@ -95,6 +101,7 @@ function App() {
               )
             }
           />
+
           <Route
             path="/adminDashboard"
             element={
@@ -105,8 +112,10 @@ function App() {
               )
             }
           />
+
           <Route path="/flights" element={<FlightDash flights={flights} />} />
           <Route path="/addFlight" element={<AddFlight />} />
+          <Route path="/editFlight/:id" element={<EditFlight />} />
         </Routes>
       </main>
     </div>
