@@ -8,10 +8,6 @@ import { useState } from "react";
 const AdminDash = ({ flights = [], isLoggedIn }) => {
   const [activeTab, setActiveTab] = useState("arrivals");
   const [selectedAirport, setSelectedAirport] = useState(null);
-  const [message, setMessage] = useState(() => {
-    const savedMessage = localStorage.getItem("adminDashMessage");
-    return savedMessage ? JSON.parse(savedMessage) : null;
-  });
   const navigate = useNavigate();
 
   const deleteFlight = async (flightId, flightNumber) => {
@@ -24,22 +20,16 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
         },
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to delete flight");
+      if (response.ok) {
+        alert(`Flight ${flightNumber} deleted successfully.`);
+      } else {
+        const errorData = await response.text();
+        console.error("Failed to delete flight:", errorData);
+        alert(`Failed to delete flight ${flightNumber} because of ${errorData}. Please try again.`);
       }
-
-      const successMessage = {
-        type: "success",
-        text: `Flight ${flightNumber} deleted successfully.`,
-      };
-      setMessage(successMessage);
-      localStorage.setItem("adminDashMessage", JSON.stringify(successMessage));
       window.location.reload();
     } catch (error) {
       console.error("Error deleting flight:", error);
-      const errorMessage = { type: "error", text: `Failed to delete flight ${flightNumber}.` };
-      setMessage(errorMessage);
-      localStorage.setItem("adminDashMessage", JSON.stringify(errorMessage));
     }
   };
 
@@ -47,16 +37,11 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
     if (isLoggedIn === false) {
       navigate("/login", { replace: true });
     }
+  }, [isLoggedIn]);
 
-    if (message) {
-      const timeout = setTimeout(() => {
-        setMessage(null);
-        localStorage.removeItem("adminDashMessage");
-      }, 10000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [isLoggedIn, message]);
+  if (isLoggedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   const fetchAirports = async () => {
     try {
@@ -105,7 +90,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
   const filteredFlights = flights.filter((flight) => {
     if (!selectedAirport || selectedAirport === "All Airports") return true;
 
-    const targetAirport = String(selectedAirport).trim().toLowerCase();
+  const targetAirport = String(selectedAirport).trim().toLowerCase();
 
     if (activeTab === "arrivals") {
       const arrCode = flight.arrivalAirportCode
@@ -120,17 +105,10 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
     }
   });
 
-  if (isLoggedIn === null) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="admin-dash-container">
       <div className="title-container">
-        <h2>Admin Dashboard</h2>
-        {message && (
-          <div className={`message-${message.type}`}>{message.text}</div>
-        )}
+        <h2>ADMIN DASHBOARD</h2>
       </div>
 
       <div className="dash-controls">

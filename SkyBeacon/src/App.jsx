@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Aurora from "./components/Aurora.jsx";
 import Nav from "./components/Nav.jsx";
@@ -13,6 +13,8 @@ function App() {
   const [flights, setFlights] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     const storedLoginState = localStorage.getItem("isLoggedIn");
@@ -21,45 +23,49 @@ function App() {
     }
   }, []);
 
-  const handleLogin = (userData) => {
-    fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: userData.username,
-        password: userData.password,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Invalid login credentials");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setIsLoggedIn(true);
-        setUser(data);
-
-        localStorage.setItem("isLoggedIn", "true");
-      })
-      .catch((error) => {
-        console.error("Login error:", error);
-        alert("Login failed. Please check your credentials.");
+  const handleLogin = async (userData) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userData.username,
+          password: userData.password,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Invalid login credentials");
+      }
+
+      const data = await response.json();
+      setIsLoggedIn(true);
+      setUser(data);
+      localStorage.setItem("isLoggedIn", "true");
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
-  const handleLogout = () => {
-    fetch("http://localhost:8080/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    }).catch(() => {});
+  const clearMessage = () => setMessage(null);
 
-    setIsLoggedIn(false);
-    setUser(null);
-    localStorage.removeItem("isLoggedIn");
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoggedIn(false);
+      setUser(null);
+      localStorage.removeItem("isLoggedIn");
+    }
   };
 
   useEffect(() => {
@@ -88,7 +94,7 @@ function App() {
       <main className="app-content">
         <Nav isLoggedIn={isLoggedIn} onLogout={handleLogout} />
 
-        <Routes>
+        <Routes key={isLoggedIn}>
           <Route path="/" element={<Home flights={flights} />} />
 
           <Route
@@ -108,14 +114,53 @@ function App() {
               isLoggedIn ? (
                 <AdminDash flights={flights} isLoggedIn={isLoggedIn} />
               ) : (
-                <Navigate to="/login" replace />
+                <Navigate
+                  to="/login"
+                  state={{
+                    message: "Please log in to access the admin dashboard.",
+                    from: location,
+                  }}
+                  replace
+                />
               )
             }
           />
 
           <Route path="/flights" element={<FlightDash flights={flights} />} />
-          <Route path="/addFlight" element={<AddFlight />} />
-          <Route path="/editFlight/:id" element={<EditFlight />} />
+          <Route
+            path="/addFlight"
+            element={
+              isLoggedIn ? (
+                <AddFlight isLoggedIn={isLoggedIn} />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{
+                    message: "Please log in to add flights.",
+                    from: location,
+                  }}
+                  replace
+                />
+              )
+            }
+          />
+          <Route
+            path="/editFlight/:id"
+            element={
+              isLoggedIn ? (
+                <EditFlight isLoggedIn={isLoggedIn} />
+              ) : (
+                <Navigate
+                  to="/login"
+                  state={{
+                    message: "Please log in to edit flights.",
+                    from: location,
+                  }}
+                  replace
+                />
+              )
+            }
+          />
         </Routes>
       </main>
     </div>

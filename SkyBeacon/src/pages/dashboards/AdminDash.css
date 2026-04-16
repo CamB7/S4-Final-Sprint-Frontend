@@ -6,21 +6,6 @@
   margin-bottom: 3rem;
 }
 
-
-.message-success{
-  color: rgb(113, 215, 118);
-  font-size: 1.5rem;
-  font-family: var(--nunito);
-  font-weight: 700;
-}
-
-.message-error{
-  color: rgb(218, 85, 85);
-  font-size: 1.5rem;
-  font-family: var(--nunito);
-  font-weight: 700;
-}
-
 .title-container h2{
     margin: 0rem;
     font-size: 3rem;

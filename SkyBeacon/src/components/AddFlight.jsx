@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './AddFlight.css';
 
-const AddFlight = () => {
+const AddFlight = ({isLoggedIn}) => {
   const [formData, setFormData] = useState({
     airlineName: '',
     flightNumber: '',
@@ -22,6 +23,18 @@ const AddFlight = () => {
 
   const [departureGates, setDepartureGates] = useState([]);
   const [arrivalGates, setArrivalGates] = useState([]);
+
+  const navigate = useNavigate();
+
+      useEffect(() => {
+        if (isLoggedIn === false) {
+          navigate("/login", { replace: true });
+        }
+      }, [isLoggedIn]);
+    
+      if (isLoggedIn === null) {
+        return <div>Loading...</div>;
+      }
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -144,7 +157,7 @@ const AddFlight = () => {
         className="glass-form"
         onSubmit={handleSubmit}
       >
-        <h2 className="form-title">Add New Flight</h2>
+        <h2 className="form-title">ADD NEW FLIGHT</h2>
 
         <div className="form-grid">
           <div className="form-group">
