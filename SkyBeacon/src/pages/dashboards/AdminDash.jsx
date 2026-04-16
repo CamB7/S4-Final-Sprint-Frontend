@@ -189,6 +189,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
                       height="24"
                       viewBox="0 0 24 24"
                       onClick={() => navigate(`/EditFlight/${flight.id}`, { state: { flight } })}
+                      alt="Edit Flight Icon"
                     >
                       <rect width="24" height="24" fill="none" />
                       <path
@@ -207,6 +208,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
                       onClick={() =>
                         deleteFlight(flight.id, flight.flightNumber)
                       }
+                      alt="Delete Flight Icon"
                     >
                       <rect width="24" height="24" fill="none" />
                       <path

@@ -115,3 +115,12 @@
 .status-departed {
   color: rgb(152, 152, 152);
 }
+
+.delete-icon path, .edit-icon path {
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.delete-icon path:hover, .edit-icon path:hover {
+  fill: white;
+  stroke: none;
+}
