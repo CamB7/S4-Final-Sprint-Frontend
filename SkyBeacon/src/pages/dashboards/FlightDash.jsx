@@ -72,7 +72,7 @@ const FlightDash = ({ flights = [] }) => {
   return (
     <div className="flight-dash-container">
       <div className="title-container">
-        <h2>FLIGHTS </h2>
+        <h2>FLIGHTS</h2>
       </div>
       <div className="dash-controls">
         <div className="tabs">

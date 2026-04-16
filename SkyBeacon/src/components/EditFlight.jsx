@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./EditFlight.css";
 
-const EditFlight = () => {
+const EditFlight = ({isLoggedIn}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -10,8 +10,19 @@ const EditFlight = () => {
 
   const [airports, setAirports] = useState([]);
   const [aircraftList, setAircraftList] = useState([]);
+  
   const [departureGates, setDepartureGates] = useState([]);
   const [arrivalGates, setArrivalGates] = useState([]);
+
+    useEffect(() => {
+      if (isLoggedIn === false) {
+        navigate("/login", { replace: true });
+      }
+    }, [isLoggedIn]);
+  
+    if (isLoggedIn === null) {
+      return <div>Loading...</div>;
+    }
 
   useEffect(() => {
     if (!location.state?.flight) {
@@ -127,7 +138,7 @@ const EditFlight = () => {
   return (
     <div className="edit-flight-container">
       <form className="glass-form" onSubmit={handleSubmit}>
-        <h2 className="form-title">Edit Flight</h2>
+        <h2 className="form-title">EDIT FLIGHT</h2>
         <div className="form-grid">
           <div className="form-group">
             <label>Airline</label>

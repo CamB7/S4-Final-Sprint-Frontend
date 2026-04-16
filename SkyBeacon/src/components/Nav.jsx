@@ -6,7 +6,9 @@ const Nav = ({ isLoggedIn, onLogout }) => {
   return (
     <nav className="main-nav">
       <div>
-        <img src={logo} alt="SkyBeacon Logo" className="nav-logo" />
+        <Link to="/">
+          <img src={logo} alt="SkyBeacon Logo" className="nav-logo" />
+          </Link>
       </div>
       <ul>
         <li>
@@ -24,7 +26,9 @@ const Nav = ({ isLoggedIn, onLogout }) => {
               <Link to="/addFlight">Add Flight</Link>
             </li>
             <li onClick={onLogout} style={{ cursor: "pointer" }}>
-              <a><span>Logout</span></a>
+              <Link to="/">
+                <span>Logout</span>
+              </Link>
             </li>
           </>
         ) : (
