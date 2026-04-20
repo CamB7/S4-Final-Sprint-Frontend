@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './AddFlight.css';
+import "./AddFlight.css";
 
-const AddFlight = ({isLoggedIn}) => {
+const AddFlight = ({ isLoggedIn }) => {
   const [formData, setFormData] = useState({
-    airlineName: '',
-    flightNumber: '',
-    aircraftId: '',
-    departureAirport: '',
-    arrivalAirport: '',
-    departureDate: '',
-    departureTime: '',
-    arrivalDate: '',
-    arrivalTime: '',
-    departureGate: '',
-    arrivalGate: '',
-    status: 'SCHEDULED',
+    airlineName: "",
+    flightNumber: "",
+    aircraftId: "",
+    departureAirport: "",
+    arrivalAirport: "",
+    departureDate: "",
+    departureTime: "",
+    arrivalDate: "",
+    arrivalTime: "",
+    departureGate: "",
+    arrivalGate: "",
+    status: "SCHEDULED",
   });
 
   const [airports, setAirports] = useState([]);
@@ -26,30 +26,30 @@ const AddFlight = ({isLoggedIn}) => {
 
   const navigate = useNavigate();
 
-      useEffect(() => {
-        if (isLoggedIn === false) {
-          navigate("/login", { replace: true });
-        }
-      }, [isLoggedIn]);
-    
-      if (isLoggedIn === null) {
-        return <div>Loading...</div>;
-      }
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      navigate("/login", { replace: true });
+    }
+  }, [isLoggedIn]);
+
+  if (isLoggedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const fetchOptions = { credentials: 'include' };
+        const fetchOptions = { credentials: "include" };
 
         const [airportsRes, aircraftRes] = await Promise.all([
-          fetch('http://localhost:8080/airports', fetchOptions),
-          fetch('http://localhost:8080/aircrafts', fetchOptions),
+          fetch(`${import.meta.env.VITE_API_URL}/airports`, fetchOptions),
+          fetch(`${import.meta.env.VITE_API_URL}/aircrafts`, fetchOptions),
         ]);
 
         if (airportsRes.ok) setAirports(await airportsRes.json());
         if (aircraftRes.ok) setAircraftList(await aircraftRes.json());
       } catch (error) {
-        console.error('Error fetching form options:', error);
+        console.error("Error fetching form options:", error);
       }
     };
 
@@ -60,16 +60,16 @@ const AddFlight = ({isLoggedIn}) => {
     if (formData.departureAirport && airports.length > 0) {
       // Find the airport ID using the selected code
       const airport = airports.find(
-        (a) => a.code === formData.departureAirport
+        (a) => a.code === formData.departureAirport,
       );
       if (airport) {
-        fetch(`http://localhost:8080/airports/${airport.id}/gates`, {
-          credentials: 'include',
+        fetch(`${import.meta.env.VITE_API_URL}/airports/${airport.id}/gates`, {
+          credentials: "include",
         })
           .then((res) => res.json())
           .then((data) => setDepartureGates(data))
           .catch((err) =>
-            console.error('Error fetching departure gates:', err)
+            console.error("Error fetching departure gates:", err),
           );
       }
     } else {
@@ -81,12 +81,12 @@ const AddFlight = ({isLoggedIn}) => {
     if (formData.arrivalAirport && airports.length > 0) {
       const airport = airports.find((a) => a.code === formData.arrivalAirport);
       if (airport) {
-        fetch(`http://localhost:8080/airports/${airport.id}/gates`, {
-          credentials: 'include',
+        fetch(`${import.meta.env.VITE_API_URL}/airports/${airport.id}/gates`, {
+          credentials: "include",
         })
           .then((res) => res.json())
           .then((data) => setArrivalGates(data))
-          .catch((err) => console.error('Error fetching arrival gates:', err));
+          .catch((err) => console.error("Error fetching arrival gates:", err));
       }
     } else {
       setArrivalGates([]);
@@ -113,50 +113,47 @@ const AddFlight = ({isLoggedIn}) => {
       aircraftId: parseInt(formData.aircraftId, 10), // Must send as number
     };
 
-    console.log('Submitting transformed flight data:', payload);
+    console.log("Submitting transformed flight data:", payload);
 
     try {
-      const response = await fetch('http://localhost:8080/flights', {
-        method: 'POST',
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/flights`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        alert('Flight added successfully!');
+        alert("Flight added successfully!");
         setFormData({
-          airlineName: '',
-          flightNumber: '',
-          aircraftId: '',
-          departureAirport: '',
-          arrivalAirport: '',
-          departureDate: '',
-          departureTime: '',
-          arrivalDate: '',
-          arrivalTime: '',
-          departureGate: '',
-          arrivalGate: '',
-          status: 'SCHEDULED',
+          airlineName: "",
+          flightNumber: "",
+          aircraftId: "",
+          departureAirport: "",
+          arrivalAirport: "",
+          departureDate: "",
+          departureTime: "",
+          arrivalDate: "",
+          arrivalTime: "",
+          departureGate: "",
+          arrivalGate: "",
+          status: "SCHEDULED",
         });
       } else {
         const errorData = await response.text();
-        console.error('Server returned 400 Bad Request:', errorData);
+        console.error("Server returned 400 Bad Request:", errorData);
         alert(`Failed to add flight: ${errorData}`);
       }
     } catch (error) {
-      console.error('Network Error:', error);
+      console.error("Network Error:", error);
     }
   };
 
   return (
     <div className="add-flight-container">
-      <form
-        className="glass-form"
-        onSubmit={handleSubmit}
-      >
+      <form className="glass-form" onSubmit={handleSubmit}>
         <h2 className="form-title">ADD NEW FLIGHT</h2>
 
         <div className="form-grid">
@@ -190,17 +187,11 @@ const AddFlight = ({isLoggedIn}) => {
               onChange={handleChange}
               required
             >
-              <option
-                value=""
-                disabled
-              >
+              <option value="" disabled>
                 Select Aircraft
               </option>
               {aircraftList.map((a) => (
-                <option
-                  key={a.id}
-                  value={a.id}
-                >
+                <option key={a.id} value={a.id}>
                   {a.tailNumber} - {a.type}
                 </option>
               ))}
@@ -215,17 +206,11 @@ const AddFlight = ({isLoggedIn}) => {
               onChange={handleChange}
               required
             >
-              <option
-                value=""
-                disabled
-              >
+              <option value="" disabled>
                 Select Airport
               </option>
               {airports.map((airport) => (
-                <option
-                  key={airport.id}
-                  value={airport.code}
-                >
+                <option key={airport.id} value={airport.code}>
                   {airport.code} - {airport.name}
                 </option>
               ))}
@@ -240,17 +225,11 @@ const AddFlight = ({isLoggedIn}) => {
               onChange={handleChange}
               required
             >
-              <option
-                value=""
-                disabled
-              >
+              <option value="" disabled>
                 Select Airport
               </option>
               {airports.map((airport) => (
-                <option
-                  key={airport.id}
-                  value={airport.code}
-                >
+                <option key={airport.id} value={airport.code}>
                   {airport.code} - {airport.name}
                 </option>
               ))}
@@ -310,10 +289,7 @@ const AddFlight = ({isLoggedIn}) => {
             >
               <option value="">Select Gate</option>
               {departureGates.map((gate) => (
-                <option
-                  key={gate.id}
-                  value={gate.code}
-                >
+                <option key={gate.id} value={gate.code}>
                   {gate.code}
                 </option>
               ))}
@@ -329,10 +305,7 @@ const AddFlight = ({isLoggedIn}) => {
             >
               <option value="">Select Gate</option>
               {arrivalGates.map((gate) => (
-                <option
-                  key={gate.id}
-                  value={gate.code}
-                >
+                <option key={gate.id} value={gate.code}>
                   {gate.code}
                 </option>
               ))}
@@ -355,10 +328,7 @@ const AddFlight = ({isLoggedIn}) => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="submit-button"
-        >
+        <button type="submit" className="submit-button">
           ADD FLIGHT
         </button>
       </form>

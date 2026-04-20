@@ -13,7 +13,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
   const deleteFlight = async (flightId, flightNumber) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/flights/${flightId}`,
+        `${import.meta.env.VITE_API_URL}/flights/${flightId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -25,7 +25,9 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
       } else {
         const errorData = await response.text();
         console.error("Failed to delete flight:", errorData);
-        alert(`Failed to delete flight ${flightNumber} because of ${errorData}. Please try again.`);
+        alert(
+          `Failed to delete flight ${flightNumber} because of ${errorData}. Please try again.`,
+        );
       }
       window.location.reload();
     } catch (error) {
@@ -45,7 +47,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
 
   const fetchAirports = async () => {
     try {
-      const response = await fetch("http://localhost:8080/airports", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/airports`, {
         method: "GET",
         credentials: "include",
       });
@@ -90,7 +92,7 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
   const filteredFlights = flights.filter((flight) => {
     if (!selectedAirport || selectedAirport === "All Airports") return true;
 
-  const targetAirport = String(selectedAirport).trim().toLowerCase();
+    const targetAirport = String(selectedAirport).trim().toLowerCase();
 
     if (activeTab === "arrivals") {
       const arrCode = flight.arrivalAirportCode
@@ -188,7 +190,11 @@ const AdminDash = ({ flights = [], isLoggedIn }) => {
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
-                      onClick={() => navigate(`/EditFlight/${flight.id}`, { state: { flight } })}
+                      onClick={() =>
+                        navigate(`/EditFlight/${flight.id}`, {
+                          state: { flight },
+                        })
+                      }
                       alt="Edit Flight Icon"
                     >
                       <rect width="24" height="24" fill="none" />

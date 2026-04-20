@@ -17,25 +17,39 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    const storedLoginState = localStorage.getItem("isLoggedIn");
-    if (storedLoginState === "true") {
-      setIsLoggedIn(true);
-    }
+    fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((data) => {
+        setIsLoggedIn(true);
+        setUser(data);
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+        setUser(null);
+      });
   }, []);
 
   const handleLogin = async (userData) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: userData.username,
+            password: userData.password,
+          }),
         },
-        body: JSON.stringify({
-          username: userData.username,
-          password: userData.password,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Invalid login credentials");
@@ -55,7 +69,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/auth/logout", {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -69,7 +83,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/flights", {
+    fetch(`${import.meta.env.VITE_API_URL}/flights`, {
       credentials: "include",
     })
       .then((response) => {

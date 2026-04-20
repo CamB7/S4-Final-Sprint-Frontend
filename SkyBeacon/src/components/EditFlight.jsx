@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./EditFlight.css";
 
-const EditFlight = ({isLoggedIn}) => {
+const EditFlight = ({ isLoggedIn }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -10,26 +10,28 @@ const EditFlight = ({isLoggedIn}) => {
 
   const [airports, setAirports] = useState([]);
   const [aircraftList, setAircraftList] = useState([]);
-  
+
   const [departureGates, setDepartureGates] = useState([]);
   const [arrivalGates, setArrivalGates] = useState([]);
 
-    useEffect(() => {
-      if (isLoggedIn === false) {
-        navigate("/login", { replace: true });
-      }
-    }, [isLoggedIn]);
-  
-    if (isLoggedIn === null) {
-      return <div>Loading...</div>;
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      navigate("/login", { replace: true });
     }
+  }, [isLoggedIn]);
+
+  if (isLoggedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   useEffect(() => {
     if (!location.state?.flight) {
       navigate("/AdminDash", { replace: true });
     }
 
-    fetch(`http://localhost:8080/flights/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/flights/${id}`, {
+      credentials: "include"
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch flight data");
@@ -47,8 +49,8 @@ const EditFlight = ({isLoggedIn}) => {
         const fetchOptions = { credentials: "include" };
 
         const [airportsRes, aircraftRes] = await Promise.all([
-          fetch("http://localhost:8080/airports", fetchOptions),
-          fetch("http://localhost:8080/aircrafts", fetchOptions),
+          fetch(`${import.meta.env.VITE_API_URL}/airports`, fetchOptions),
+          fetch(`${import.meta.env.VITE_API_URL}/aircrafts`, fetchOptions),
         ]);
 
         if (airportsRes.ok) setAirports(await airportsRes.json());
@@ -67,7 +69,7 @@ const EditFlight = ({isLoggedIn}) => {
         (a) => a.code === flightData.departureAirportCode,
       );
       if (airport) {
-        fetch(`http://localhost:8080/airports/${airport.id}/gates`, {
+        fetch(`${import.meta.env.VITE_API_URL}/airports/${airport.id}/gates`, {
           credentials: "include",
         })
           .then((res) => res.json())
@@ -87,7 +89,7 @@ const EditFlight = ({isLoggedIn}) => {
         (a) => a.code === flightData.arrivalAirportCode,
       );
       if (airport) {
-        fetch(`http://localhost:8080/airports/${airport.id}/gates`, {
+        fetch(`${import.meta.env.VITE_API_URL}/airports/${airport.id}/gates`, {
           credentials: "include",
         })
           .then((res) => res.json())
@@ -112,7 +114,7 @@ const EditFlight = ({isLoggedIn}) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/flights/${flightData.id}`,
+        `${import.meta.env.VITE_API_URL}/flights/${flightData.id}`,
         {
           method: "PUT",
           credentials: "include",
