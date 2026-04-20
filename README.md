@@ -36,9 +36,9 @@ Make sure you have Node.js installed and the corresponding backend server runnin
    ```
 
 ### Scripts
-npm run dev - Starts the Vite development server.
-npm run build - Builds the app for production.
-npm run test - Runs the Vitest test suite.
+npm run dev - Starts the Vite development server.  
+npm run build - Builds the app for production.  
+npm run test - Runs the Vitest test suite.  
 
 ## User Stories
 
