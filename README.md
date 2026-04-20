@@ -1,4 +1,4 @@
-# SkyBeacon ✈️
+# SkyBeacon ✈
 
 *Is it delayed? Probably.*
 
